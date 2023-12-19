@@ -3,12 +3,12 @@ layout: default
 ---
 <div id="HeaderPics">
 
- <img src="./assets/img/ClothSimPic.png" alt=""> 
- <img src="./assets/img/ShallowWaterSimPic.png" alt=""> 
- 
+ <img src="./assets/img/heatmap.jpg" alt=""> 
+  <img src="./assets/img/FlowField.png" alt=""> 
+
 </div>
 
-# Cloth and Shallow Water Simulation - Caleb Wiebolt
+# Group Pathfinding With Flow Fields - Caleb Wiebolt
 
 Below is the written report for my Final Project for CSCI 4611 Animation and Planning in Games class. For the project I implemented a Flow Field pathfinding solutions for groups of agents. The Flow Field is built on a grid representation and the integration field is calculated with the Eikonal equation, providing a smoother vector field when compared to methods based on a form of Dijkstra's algorithm. To look at the source code or a pre-built executable click the button below. 
 
@@ -51,16 +51,29 @@ Flow Fields, while an old technology are used in modern games. One of the most r
 
 
 ## Progress Dicussion and Images
+For the most part my project progressed as expected. Sadly I didn't get to implement some of my stretch goals like multi level terrain or dynamic obstacles. That being said i am very happy with what I was able to get done. My initial sketch and a screenshot of my progress part way through the process are both below.
+
+### Initial Sketch
+<img src="./assets/img/sketch1.png" alt="" style="max-width: 800px"> 
+
+### Progress Screenshot
+<img src="./assets/img/progressScreenshot.png" alt="" style="max-width: 800px"> 
 
 
 ## Feedback and Response
 While much of my feedback was just general posative and ecouraging sentiments, one bit of feedback really pushed me to put in the work to implement the Eiknol equation to get smoother looking paths. Initially i had a version working using Dijkstras algorhtm and was dicussing the artifacitng present at one of our progress sessions. I was unsure if I could comprehend the math well enought to implement a better solution. The feedback was the push I needed to attempt it and after many hours and a rather dense paper I got the system working.
 
 ## Limitations and Further Work
-One of the main limiations . . . . 
+One of the main limiations of the overall project is the steering behavior of the aggents following the flow Field. They can occasionally behaves somewhat arraticly and not turn smoothly. Also there are some occasional bugs with how the agents responds to unitys physics system. A lot of this stems from a lack of local collision avoidance and a lack of proper arival detection. Adding both would be great extensions to this project. It would also be interesting to see a chunked/hybrid version of this system working with a A* search done first on a coarse grid and then a smaller flow field built only along that path.
 
 ## Tools and Libraries Used
 *   Unity 2022.3.9f1 and Visual Studio
 
 ## Papers and Resources
-*   Paper A
+* <a href="https://en.wikipedia.org/wiki/Eikonal_equation"> Eikonal Equation Wiki Page </a>
+* <a href="https://leifnode.com/2013/12/flow-field-pathfinding/"> Flow Field Pathfinding Tutorial by LeifNode </a>
+* <a href="https://gamedev.stackexchange.com/questions/153000/fix-my-flow-field-pathfinding"> A Very Helpful StackOverflow Thread about Calculating the Integration Field</a>
+* Continuum Crowds by Adrien Treuille, Seth Cooper, and Zoran Popovic
+* A Fast Iterative Method for Eikonal Equations by Won-Ki Jeong and Ross T. Whitaker
+* <a href="http://www.gameaipro.com/GameAIPro/GameAIPro_Chapter23_Crowd_Pathfinding_and_Steering_Using_Flow_Field_Tiles.pdf"> GameAIPro Chapter 23 Crowd Apthfinding and Steering Using Flow Field Tiles</a>
+ 
