@@ -10,47 +10,57 @@ layout: default
 
 # Cloth and Shallow Water Simulation - Caleb Wiebolt
 
-Below is the write-up for my Cloth simulation project which also includes a separate Shallow Water Simulation as well. It was created in Unity for my Animation and Planning in Games class. All the graded features that I attempted can be found below. To look at the source code or a pre-built executable click the button below. 
+Below is the written report for my Final Project for CSCI 4611 Animation and Planning in Games class. For the project I implemented a Flow Field pathfinding solutions for groups of agents. The Flow Field is built on a grid representation and the integration field is calculated with the Eikonal equation, providing a smoother vector field when compared to methods based on a form of Dijkstra's algorithm. To look at the source code or a pre-built executable click the button below. 
 
 <a href="{{ site.github.repository_url }}" class="btn btn-dark">Go to the Code</a>
 
 
 
 ## Features Attempted
-### Showcase Video
+### Presentation Video
+{% include video1.html %}
+
+### Results Video
+{% include video2.html %}
 
 
-{% include video.html %}
+## My project
+For my project, inspured by the RTS games that I grew up plauing, I wanted to implement a pathfinding solution for large groups of agents. From previous reading I was aware of the idea of using flow fields for pathfinding instead of more traditional solutions like A* and decided that this would be both an interesting challenge and a fun looking demo.
+
+## The Algorithm
+
+### Overview
+There are many ways to go about pathfinding large groups. The default for most people would probably be an applicaiton of A* or one of its variants. The issue with A* is that for large groups of agents that are going to the same place, an individual path needs to be calcualted for each. This creates a great deal of repatative and overlapping computation. One solution to this is pathfinding using Flow Fields, which involves calculating a single vector field that provides a path from every location towards the goal. Each agent then simply references their position on the Flow Field to recive the local direction in which they need to travel to reach the goal.
+
+The Flow Field algorithm works like this. First we calculate an obstruction map. A map of values for each cell giving how difficult it is to travel through that cell. In my implementation each cell keeps a byte indicating its weight, where 0 is unubstructed and 255 is fully impassible. Given that obstruction map we can then calculate and integration map. This is a map of values that repsresents the distance that would need to be traveled in order to get to this cell. Given the integration map we then calculate a vector field where the vectors in each cell points towards the direction the gradient is decending, ultimatly leading towards the goal point.
+
+The integration field can be cacluated in many different ways. One of the computationally fastest ways to do this is with a version of Dijkstra's algorithm to step through each node going out from the goal position. The issue with this methods was because it is inherently disccrete, the calculated integration field had noticable sqaure or dimond shape artifacting. This caused agents to take odd paths favoring the cardinal axis. After attemtpting this method I switched to calculating the integration field using the Eikonal equation, which is a partial differential equation used to model wave propogation amongst other things. While more computationally expesniev, the field provided is much smoother and more realistic, similar to if a wave in water originalted form the goal position and radiated outwards. There are several ways to perform these calcualtions, for instance the Fast Martching Method. For my implementation I used the Fast Iterative Method, described in the paper linked below.
+
+To calculate the vector field I initially simply calculate the gradient at each cell. This caused issues however in very narrow bottlnecks. I observed that cells that were next to walls or other obstructions were so weighted by the high integration value that the vecotor almost always pointed directly away from the obstalce, causing agents to get stuck. To solve this I implemented a solution that checks if a cells is ajacent to a obstructed cell and if so, instead of calcualting the actual gradient, the vector is simply pointed towards the cell with the lowest value. This effectivley solved the issue.
+
+### Bottlenecks and Improvements
+One of the main bottlenecks with Flow Field pathfining is that, while the computation of the field does not scale with the number of units like an A* solution, it does scale with the map size. Large maps very quickly become computationally untennable. Flow Fields also start to loose some of their advantages when many agents are pathing to many different goals. One improvment that could be implemented to lesson the effective of map size is a chunking solution. This is a method that was used in several papers that I reviewed. They described a hybrid solution that ran A* on a coarse map and then used Flow Fields locally. The project could also be improved by implementing local collision avoidance for the agents or perhaps some sort of flocking behavior in addition to the Flow Field algorithm.
 
 
-### Feature List
-
-| Feature                           | Description       | TimeCode |
-|:-------------                     |:------------------|:------|
-| Cloth Simulation          | A natural-looking cloth sim that collides with an object. | 0:03-4:34  |
-| 3D Simulation        | The Cloth sim is in 3D and has a natural camera. | 0:03-4:34   |
-| High-Quality Render  | I used texturing, lighting, particle systems, and a camera controller to make a compelling render | Throughout the video. (The wind particles turned out nice) |
-| Air Drag on Cloth | The cloth is affected by air drag and an included wind system. | 1:38-3:35  |
-| Continuum Fluid Simulation   | I implemented a Shallow Water Simulation and integrated it into a scene. | 4:35-7:34   |
+## Connection To Course Material
+This project has connections to many topics we covered in our course. The most obvious is the connections to our path planning section, talking about various search methods and A*. There is also an interesting overlap between the use of flow fields for pathfinding and the use of flow fields/vector fields for eularian fluid simulation. I also found that our section on partial differential equations, vector fields, and gradients, helped lay the foundation for my understanding of this method.
 
 
+## Connection To the State of the Art
+Flow Fields, while an old technology are used in modern games. One of the most recent examples of this is A Pluage Tale which used a flow field system to control the movmeent of its swarms of rats that harry the charecter. In terms of pathfinding for large groups, most games use a system which utalizes a hybrid system nuilt on variants of A* and local steering algorithms. Recent papers have sugested different methods of weighting A* to incentivse group like behavior. One paper I ready described the use of a global direction map that would be learned as agents moved around the world. The idea was to weight A* to favor cells if the vector in those cells pointed in the same direction as the desired movment. This would essentially increntivse paths to follow the directions of previous paths. Another paper I read sugested a similar method, this time based on ant pheremone trails, leavign markers that would influence A* to follow. These methods not only had interesting effects on group movement behavior but also performance as each A* path searched less and less of the graph as the weighting got higher in the direction of the paths of their group memebers. It is clear from my readings that real modern soltuions for group movment in games involve a series of layered algorithms depending on the group behaviors and performance budget that the developers desire.
+
+
+## Progress Dicussion and Images
+
+
+## Feedback and Response
+While much of my feedback was just general posative and ecouraging sentiments, one bit of feedback really pushed me to put in the work to implement the Eiknol equation to get smoother looking paths. Initially i had a version working using Dijkstras algorhtm and was dicussing the artifacitng present at one of our progress sessions. I was unsure if I could comprehend the math well enought to implement a better solution. The feedback was the push I needed to attempt it and after many hours and a rather dense paper I got the system working.
+
+## Limitations and Further Work
+One of the main limiations . . . . 
 
 ## Tools and Libraries Used
 *   Unity 2022.3.9f1 and Visual Studio
 
-
-## Assets Used
-*   2D Pixel Art Platformer \| Biome - American Forest art assets by <a href="https://assetstore.unity.com/packages/2d/environments/2d-pixel-art-platformer-biome-american-forest-255694"> OOO Superposition Principle Inc.</a> on the Unity Asset Store
-* Beachball Textures by <a href="https://www.robinwood.com/Catalog/FreeStuff/Textures/TexturePages/BallMaps.html">Robin Wood</a>
-* Skybox Texture by <a href="https://assetstore.unity.com/packages/2d/textures-materials/sky/skybox-series-free-103633"> Unamed666</a> on the Unity Asset Store 
-* Wood Decking Texture provided by <a href="https://architextures.org/textures/487"> architextures.org</a>
-* Cloth Texture provided by <a href="https://freepbr.com/materials/diagonal-stripe-weave-pbr/"> freepbr.com</a>
-
-
-## Difficulties Encountered
-Building these simulations was a first for me. I have made games before, but implementing my own simulation code is a challenge I have never tackled before. One of the main challenges I had while implementing my simulations, specifically the cloth simulation, was just the finickyness of tuning all the physics simulation parameters. What time step should I use? What k values? More nodes or less? If I changed one value everything else needed to be changed. Beyond this, I was having a strange issue where my cloth would never come to a complete rest. There was enough inaccuracy in the calculations that the cloth would always have a little energy. After hours of double-checking the code, trying different higher-order integration schemes, I couldn't get anything to work. Finally, after some inspiration from a cloth simulation reference project I saw online, I added a janky dampening to the velocity of each node that is relative to the node's total velocity. Is it 'technically' accurate, probably not. It might be hacky, but it's fast, looks good, and ends up being one line of code. Just another reminder that at the end of the day, it's all about how the simulation looks. People watch your simulation, not your code.
-
-## Art Contest
- <img id="gif" src="./assets/img/ArtEntryCalebWiebolt.gif" alt=""> 
-
-
+## Papers and Resources
+*   Paper A

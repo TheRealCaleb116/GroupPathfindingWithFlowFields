@@ -18,10 +18,10 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: Cloth and Shallow Water Simulation - Caleb Wiebolt
+title: Group Pathfinding With Flow Fields - Caleb Wiebolt
 description: >-
-  A project written in Unity for my Animation and Planing in Games class Project 2.
-baseurl: "/ClothAndSWSimProject" # the subpath of your site, e.g. /blog
+  A Flow Field pathfinding project written in Unity3D as my final project for my CSC 4611 Animation and Planing in Games class.
+baseurl: "/GroupPathfindingWithFlowFields" # the subpath of your site, e.g. /blog
 url: "https://therealcaleb116.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 
 # Build settings
