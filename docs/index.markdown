@@ -4,7 +4,7 @@ layout: default
 <div id="HeaderPics">
 
  <img src="./assets/img/heatmap.jpg" alt=""> 
-  <img src="./assets/img/FlowField.png" alt=""> 
+  <img src="./assets/img/FlowField.PNG" alt=""> 
 
 </div>
 
